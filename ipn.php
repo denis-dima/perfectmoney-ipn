@@ -16,12 +16,21 @@ if (!isset($_POST['PAYMENT_ID']) || !isset($_POST['PAYEE_ACCOUNT']) || !isset($_
     exit();
 }
 
-$amount = $_POST['PAYMENT_AMOUNT'];
+$paymentID = $_POST['PAYMENT_ID'];
+$payeeAccount = $_POST['PAYEE_ACCOUNT'];
+$paymentAccount = $_POST['PAYMENT_AMOUNT'];
+$paymentUnits = $_POST['PAYMENT_UNITS'];
+$paymentBatchNum = $_POST['PAYMENT_BATCH_NUM'];
+$payerAccount = $_POST['PAYER_ACCOUNT'];
+$timestampPGMT = $_POST['TIMESTAMPGMT'];
+$v2Hash = $_POST['V2_HASH'];
+$baggageFields = $_POST['BAGGAGE_FIELDS'];
+
 $alternatePhraseHash = strtoupper(md5(PASSWORD_ACCOUNT));
-$hash = $_POST['PAYMENT_ID'] . ':' . $_POST['PAYEE_ACCOUNT'] . ':' . $_POST['PAYMENT_AMOUNT'] . ':' . $_POST['PAYMENT_UNITS'] . ':' . $_POST['PAYMENT_BATCH_NUM'] . ':' . $_POST['PAYER_ACCOUNT'] . ':' . $alternatePhraseHash . ':' . $_POST['TIMESTAMPGMT'];
+$hash = $paymentID . ':' . $payeeAccount . ':' . $paymentAccount . ':' . $paymentUnits . ':' . $paymentBatchNum . ':' . $payerAccount . ':' . $alternatePhraseHash . ':' . $timestampPGMT;
 $hash2 = strtoupper(md5($hash));
 
-if ($hash2 != $_POST['V2_HASH'])
+if ($hash2 != $v2Hash)
     exit;
 
 $method = "Uploaded funds";
